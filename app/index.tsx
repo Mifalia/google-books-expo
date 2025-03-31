@@ -1,11 +1,9 @@
-import { Button, Input } from "@ui-kitten/components";
-import { View } from "react-native";
+import { View, Text } from 'react-native'
+import React from 'react'
+import { Redirect } from 'expo-router'
 
-export default function Index() {
+export default function index() {
   return (
-    <View>
-      <Input placeholder="Password" />
-      <Button>Login</Button>
-    </View>
-  );
+    <Redirect href={'/auth/login'} />
+  )
 }
