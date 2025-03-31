@@ -3,28 +3,35 @@ import { Button, Input, Text } from "@ui-kitten/components";
 import { router } from "expo-router";
 import { StyleSheet, View } from "react-native";
 
-export default function LoginScreen() {
+export default function RegisterScreen() {
   const handleSecondaryAction = () => {
-    router.replace("/auth/register");
+    router.replace("/auth/login");
   }
 
   return (
     <AuthScreenLayout>
       <View style={s.formContainer}>
         <View>
-          <Text style={s.label}>Your Email</Text>
-          <Input placeholder="Your email" />
+          <Text style={s.label}>User name</Text>
+          <Input placeholder="Username" />
+        </View>
+        <View>
+          <Text style={s.label}>Email</Text>
+          <Input placeholder="user@example.com" />
         </View>
         <View>
           <Text style={s.label}>Your password</Text>
           <Input placeholder="Password" />
-        </View>
+        </View> 
+        <View>
+          <Text style={s.label}>Confirm Password</Text>
+          <Input placeholder="Password" />
+        </View>         
         <View style={s.submitContainer}>
-          <Button>Login</Button>
+          <Button>{"Create your accout"}</Button>
           <Text style={{textAlign:"center", marginVertical: 16}}>Or</Text>
-          <Button appearance="outline" onPress={handleSecondaryAction}>Create account</Button>
+          <Button appearance="outline" onPress={handleSecondaryAction}>{"Login"}</Button>
         </View>
-        
       </View>
     </AuthScreenLayout>
   );
