@@ -1,5 +1,4 @@
 import React from 'react'
-import ScreenSafeAreaLayout from '../ScreenSafeAreaLayout/ScreenSafeAreaLayout'
 import { StyleSheet, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import AuthIllustration from '@/assets/images/auth-illustration.png'
@@ -41,9 +40,8 @@ const s = StyleSheet.create({
     padding: 20
   },
 
-  illustration : {
-    width: "70%",
-    height: 120
+  illustration: {
+    
   },
 
   formContainer : {
