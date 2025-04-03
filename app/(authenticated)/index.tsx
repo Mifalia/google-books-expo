@@ -7,10 +7,13 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { FolderApi } from "@/services/api/FolderApi";
 import { getToken } from "@/services/storage/userStorage";
+import { IFolder } from "@/utils/validators/folderValidators";
+import Toast from "react-native-toast-message";
 
 export default function index() {
   const [showForm, setShowForm] = useState(false);
   const [folders, setFolders] = useState([]);
+  const [newFolderName, setNewFolderName] = useState("")
 
   const fetchFolders = async () => {
     const token = await getToken()
@@ -18,6 +21,40 @@ export default function index() {
     if (response && response?.success === true) {
       setFolders(response.data)
     }
+  }
+
+  const handleNewFolderNameChange = (value: string) => {
+    setNewFolderName(value)
+  }
+  
+  const handleSubmitFolder = async () => {
+    if (newFolderName.trim().length === 0) {
+      return;
+    }
+    
+    const token = await getToken()
+    const folderData : IFolder = {
+      status: 'approved',
+      title: newFolderName
+    }
+
+    const response = await FolderApi.createFolder({ data: folderData, token })
+    const success = (response !== false && response?.success === true)
+    
+    Toast.show({
+      autoHide: true,
+      text1: success ? "Folder created" : "Something went wrong",
+      text2: success ? `New folder ${newFolderName} has been created` : "Could not create your folder",
+      type: success ? "success" : "error"
+    })
+
+    if (success) {
+      setNewFolderName("");
+      toggleForm();
+      await fetchFolders()
+    };
+    
+    return;
   }
 
   useEffect(() => {
@@ -39,8 +76,8 @@ export default function index() {
             </Text>
           </View>
           <View style={s.textContainer}>
-            <Text style={s.topTitle}>Document Tracker</Text>
-            <Text style={s.topSmall}>6 Items total</Text>
+            <Text style={s.topTitle}>{"Document Tracker"}</Text>
+            <Text style={s.topSmall}>{`${folders.length} Items total`}</Text>
           </View>
         </View>
       </View>
@@ -62,12 +99,12 @@ export default function index() {
         {/* form */}
         {showForm && (
           <View style={s.formContainer}>
-            <Input placeholder="Folder Name" style={s.formInput} />
+            <Input placeholder="Folder Name" style={s.formInput} onChangeText={handleNewFolderNameChange} />
             <View style={s.formButtonGroup}>
               <Button status="danger" appearance="outline" onPress={toggleForm}>
                 <MaterialCommunityIcons name="cancel" size={24}/>
               </Button>
-              <Button status="success" appearance="outline">
+              <Button status="success" appearance="outline" onPress={handleSubmitFolder}>
                 <MaterialCommunityIcons name="check-all" size={24}/>
               </Button>
             </View>
