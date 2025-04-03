@@ -1,5 +1,6 @@
 import axios from "axios";
 import { ILoginParams, IRegistrationParams } from "@/utils/validators/authValidators";
+import { IFolder } from "@/utils/validators/folderValidators";
 
 export const getApiUrl = () => process.env.EXPO_PUBLIC_FOLDER_API_BASE_URL || "http://localhost:5000/api/v1";
 
@@ -40,5 +41,26 @@ export const FolderApi = {
       console.error({error})
       return false;
     }
-  }
+  },
+
+  /**
+   * Retrieves a list of folders from the server.
+   *
+   * @param token - The authentication token as a string.
+   * @returns The list of folders if the request is successful, or `false` if an error occurs.
+   */
+  async getFolders(token: string | null) {
+    try {
+      const response = await axios.get(getApiUrl() + "/dossiers", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      return response.data;
+    } catch (error) {
+      console.error({ error });
+      return false;
+    }
+  },
 }

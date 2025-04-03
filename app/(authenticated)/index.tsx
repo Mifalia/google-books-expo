@@ -1,13 +1,29 @@
 import { View, Text, StyleSheet } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import FolderMiniature from "@/components/ui/FolderMiniature/FolderMiniature";
+import FolderMiniature from "@/components/folder/FolderMiniature/FolderMiniature";
 import { Button, ButtonGroup, Input } from "@ui-kitten/components";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { FolderApi } from "@/services/api/FolderApi";
+import { getToken } from "@/services/storage/userStorage";
 
 export default function index() {
   const [showForm, setShowForm] = useState(false);
+  const [folders, setFolders] = useState([]);
+
+  const fetchFolders = async () => {
+    const token = await getToken()
+    const response = await FolderApi.getFolders(token);
+    if (response && response?.success === true) {
+      setFolders(response.data)
+    }
+  }
+
+  useEffect(() => {
+    fetchFolders();
+  }, [])
+  
 
   const toggleForm = () => {
     setShowForm(!showForm);
@@ -59,7 +75,9 @@ export default function index() {
         )}
 
         <View style={s.folderList}>
-          <FolderMiniature title="Memories" text="6 items total" />
+          {folders.map((folder, index) => (
+            <FolderMiniature key={index} title={folder?.title} text="0 items total" />
+          ))}
         </View>
       </View>
     </View>
