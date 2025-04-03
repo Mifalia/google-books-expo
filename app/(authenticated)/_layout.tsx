@@ -12,6 +12,8 @@ export default function AuthenticatedLayout() {
   }
   
   return (
-    <Stack />
+    <Stack screenOptions={{headerShown: false}}>
+      <Stack.Screen name='index' options={{ contentStyle: {backgroundColor: '#fffbf4'} }} />
+    </Stack>
   )
 }
