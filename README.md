@@ -16,6 +16,10 @@ cd google-books-expo
 npm ci
 ```
 
+```
+npm start
+```
+
 ## Captures d'écran
 
 ![Google Books expo app](./assets/screenshots/google-books-screenshoot.png)
